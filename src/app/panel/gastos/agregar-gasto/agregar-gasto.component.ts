@@ -127,14 +127,49 @@ export class AgregarGastoComponent implements OnInit {
   onUpdate() {
     if (this.frmAddEditGasto.valid) {
       this.loading = true;
+      const formData = new FormData(); // Usamos FormData para enviar los archivos
 
-      const body = {
-        idGasto: this.frmAddEditGasto.value.idGasto,
-        nombre: this.frmAddEditGasto.value.nombre,
-      };
+      // Obtener los archivos existentes (URLs)
+      let archivosExistentes: string[] = [];
+      if (this.archivos.length > 0) {
+        archivosExistentes = this.archivos.filter((url) => url.trim() !== '');
+      }
+
+      // Combinar archivos existentes con los nuevos
+      const archivosFinales: File[] = [];
+
+      // Simular Blobs para las URLs existentes (si es necesario)
+      archivosExistentes.forEach((url) => {
+        const blob = new Blob(); // Simulamos un Blob vacío (el backend debe manejar estos blobs)
+        archivosFinales.push(new File([blob], url)); // Usamos la URL como nombre del archivo
+      });
+
+      // Agregar archivos seleccionados al arreglo final
+      if (this.selectedFiles && this.selectedFiles.length > 0) {
+        this.selectedFiles.forEach((file) => {
+          archivosFinales.push(file);
+        });
+      }
+
+      // Agregar los valores del formulario al FormData
+      const formValues = this.frmAddEditGasto.value;
+      formData.append('idGasto', formValues.idGasto);
+      formData.append('titulo', formValues.titulo);
+      formData.append('descripcion', formValues.descripcion);
+      formData.append('proveedor', formValues.proveedor);
+      formData.append('observaciones', formValues.observaciones);
+      formData.append('fecha', formValues.fecha);
+      formData.append('monto', formValues.monto);
+      formData.append('idMoneda', formValues.idMoneda);
+      formData.append('idSecretaria', formValues.idSecretaria);
+
+      // Agregar los archivos al FormData
+      archivosFinales.forEach((file) => {
+        formData.append('files', file, file.name);
+      });
 
       Swal.fire({
-        title: '¿Estás seguro que deseas editar este categoría?',
+        title: '¿Estás seguro que deseas editar este inmueble?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#2563EB',
@@ -142,41 +177,50 @@ export class AgregarGastoComponent implements OnInit {
         confirmButtonText: 'Si, editar',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.subscription
-            .add
-            // this.categoriasService.updateData(body).subscribe({
-            //   next: (response: any) => {
-            //     console.log('respuesta editar', response);
-            //     Swal.fire(
-            //       '¡Editado!',
-            //       '¡La categoría se ha editado correctamente!',
-            //       'success'
-            //     );
-            //     this.loading = false;
-            //     setTimeout(() => {
-            //       this.router
-            //         .navigate(['/admin/categorias/listado-de-categorias'])
-            //         .then(() => {
-            //           setTimeout(() => {
-            //             location.reload();
-            //           }, 10);
-            //         });
-            //     }, 1000);
-            //   },
-            //   error: (error: any) => {
-            //     Swal.fire(
-            //       'Error!',
-            //       'Ha ocurrido un error al intentar editar la categoria. Por favor, inténtelo de nuevo más tarde.',
-            //       'error'
-            //     );
-            //   },
-            // })
-            ();
+          this.subscription.add(
+            this.gastosService
+              .updateData(
+                formValues.idGasto,
+                formValues.titulo,
+                formValues.descripcion,
+                archivosFinales,
+                formValues.proveedor,
+                formValues.observaciones,
+                formValues.fecha,
+                formValues.monto,
+                formValues.idMoneda,
+                formValues.idSecretaria
+              )
+              .subscribe({
+                next: (response: any) => {
+                  console.log('respuesta al editar', response);
+                  Swal.fire(
+                    '¡Editado!',
+                    '¡El gasto se ha editado correctamente!',
+                    'success'
+                  );
+                  this.loading = false;
+                  this.router
+                    .navigate(['/admin/gastos/listado-de-gastos'])
+                    .then(() => {
+                      location.reload();
+                    });
+                },
+                error: (error: any) => {
+                  console.log('error al editar gastos', error);
+                  Swal.fire(
+                    'Error!',
+                    'Ha ocurrido un error. Inténtelo de nuevo más tarde.',
+                    'error'
+                  );
+                },
+              })
+          );
         }
       });
     } else {
       this.toastr.error(
-        'Ocurrio un error, revise los campos e intente nuevamente'
+        'Ocurrió un error, revise los campos e intente nuevamente'
       );
     }
   }
@@ -188,14 +232,37 @@ export class AgregarGastoComponent implements OnInit {
       if (id) {
         this.isEdit = true;
         this.mostrarSkeleton = true;
+
+        // Obtener los datos por ID
         this.gastosService.getDataById(id).subscribe(
           (data: any) => {
+            console.log('data del patch value', data);
+
+            const resultado = data.resultado;
+
+            if (data.resultado.fecha) {
+              const fechaRecibida = new Date(data.resultado.fecha);
+              const fechaFormateada = fechaRecibida.toISOString().split('T')[0]; // Convertir a formato 'YYYY-MM-DD'
+              data.resultado.fecha = fechaFormateada;
+            }
+
             this.frmAddEditGasto.patchValue(data.resultado);
+            this.selectedSecretaria = data.resultado.idSecretaria;
+            this.selectedMoneda = data.resultado.idMoneda;
+
+            // Cargar las imágenes si existen
+            const urlImagenes = resultado.urlImagenes;
+            if (urlImagenes) {
+              // Convertir la cadena de URLs a un array y eliminar entradas vacías
+              this.archivos = urlImagenes
+                .split(',')
+                .filter((url: any) => url.trim() !== '');
+            }
 
             this.mostrarSkeleton = false;
           },
           (error) => {
-            console.error(error);
+            console.error('Error al cargar los datos de la propiedad:', error);
             this.mostrarSkeleton = false;
           }
         );

@@ -63,21 +63,53 @@ export class GastosService {
   }
 
   // EDITAR DATOS
+  // updateData(
+  //   idGasto: number,
+  //   titulo: string,
+  //   files: File[],
+  //   proveedor: string,
+  //   observaciones: string,
+  //   fecha: string,
+  //   monto: number,
+  //   idMoneda: number,
+  //   idSecretaria: string
+  // ): Observable<Gasto> {
+  //   const formData: FormData = new FormData();
+
+  //   formData.append('idGasto', idGasto.toString());
+  //   formData.append('titulo', titulo);
+  //   formData.append('proveedor', proveedor);
+  //   formData.append('observaciones', observaciones);
+  //   formData.append('fecha', fecha);
+  //   formData.append('monto', monto.toString());
+  //   formData.append('idMoneda', idMoneda.toString());
+  //   formData.append('idSecretaria', idSecretaria.toString());
+
+  //   if (files && files.length > 0) {
+  //     files.forEach((file, index) => {
+  //       formData.append('files', file, file.name);
+  //     });
+  //   }
+
+  //   return this.http.put<Gasto>(`${this.API_URL}/${idGasto}`, formData);
+  // }
   updateData(
     idGasto: number,
     titulo: string,
+    descripcion: string,
     files: File[],
     proveedor: string,
     observaciones: string,
     fecha: string,
     monto: number,
     idMoneda: number,
-    idSecretaria: string
+    idSecretaria: number
   ): Observable<Gasto> {
     const formData: FormData = new FormData();
 
     formData.append('idGasto', idGasto.toString());
     formData.append('titulo', titulo);
+    formData.append('descripcion', descripcion);
     formData.append('proveedor', proveedor);
     formData.append('observaciones', observaciones);
     formData.append('fecha', fecha);
