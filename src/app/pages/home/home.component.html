@@ -41,7 +41,7 @@
     class="flex flex-col justify-center md:items-start w-full text-left md:flex sm:px-[1rem] lg:px-[2rem]"
   >
     <!-- BUSCADOR -->
-    <div class="border rounded flex justify-center p-4 w-full">
+    <div class="border rounded flex justify-center p-4 w-full relative">
       <div class="flex lg:w-1/3 md:w-1/3 sm:w-full relative">
         <input
           type="text"
@@ -58,6 +58,43 @@
         <i
           class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 fa-solid fa-magnifying-glass"
         ></i>
+      </div>
+      <div
+        class="lg:flex md:flex sm:hidden gap-2 items-center absolute right-0 px-4"
+      >
+        <!-- TIPO DE INMUEBLKE -->
+        <div class="flex items-center gap-2">
+          <label
+            for="idTipoInmueble"
+            class="block text-sm font-medium text-gray-900 uppercase"
+            >secretaría:
+          </label>
+          <p-dropdown
+            optionLabel="nombre"
+            id="id"
+            [options]="secretarias"
+            filterBy="nombre"
+            [filter]="true"
+            optionValue="id"
+            placeholder="Seleccionar secretaria"
+            appendTo="body"
+            [style]="{
+              width: '100%',
+              'background-color': '#F9FAFB',
+              height: '42px',
+              display: 'flex',
+              'align-items': 'center',
+              'border-radius': '8px',
+              border: '1px solid rgb(239,239,239)'
+            }"
+          >
+            <ng-template let-e pTemplate="item">
+              <div class="l-item">
+                <div>{{ e.nombre }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </div>
       </div>
     </div>
 

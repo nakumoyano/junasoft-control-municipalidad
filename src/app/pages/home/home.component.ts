@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   @Input() gastos: any[];
+  secretarias: any[];
 
   totalRecords: number;
   loading: boolean = false;
@@ -26,6 +27,12 @@ export class HomeComponent implements OnInit {
         proveedor: 'Walter Quinteros',
         secretaria: 'Turísmo',
       },
+    ];
+
+    this.secretarias = [
+      { id: 1, nombre: 'Todas' },
+      { id: 2, nombre: 'Turísmo' },
+      { id: 3, nombre: 'Salud' },
     ];
   }
 
@@ -72,4 +79,19 @@ export class HomeComponent implements OnInit {
   navigateToCategoria() {
     this.router.navigate(['/admin/gastos/agregar-gasto']);
   }
+
+  // f************************************** FUNCION PARA CREAR DROPDOWN ***************************
+  // SECRETARIA
+  // cargarCmbTipoInmueble() {
+  //   this.tiposInmueblesService.getAllData().subscribe(
+  //     (data: any) => {
+  //       // console.log(data);
+  //       const tiposInmuebles = data.resultado;
+  //       this.tiposInmuebles = tiposInmuebles;
+  //     },
+  //     (error) => {
+  //       console.error('Error al obtener los tiposInmuebles:', error);
+  //     }
+  //   );
+  // }
 }
