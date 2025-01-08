@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit {
         fecha: '07/01/2025',
         monto: '1500000',
         proveedor: 'Walter Quinteros',
+        secretaria: 'Turísmo',
       },
     ];
   }
