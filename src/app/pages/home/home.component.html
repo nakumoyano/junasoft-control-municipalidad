@@ -91,14 +91,14 @@
                 [header]="c.nombre"
                 [style]="{ 'text-transform': 'uppercase', color: 'black' }"
               >
-                <div class="lg:flex flex:flex sm:block gap-4 text-black">
+                <div class="lg:flex flex:flex sm:block gap-6 text-black">
                   <img
                     src="https://http2.mlstatic.com/D_NQ_NP_2X_608924-MLA53616911130_022023-T.webp"
                     alt=""
-                    class="h-60 w-60 object-cover"
+                    class="h-60 lg:w-60 md:w-60 sm:w-full object-cover"
                   />
                   <div class="flex flex-col w-full gap-6">
-                    <div class="flex justify-between">
+                    <div class="lg:flex md:flex sm:block justify-between gap-6">
                       <p>
                         <strong>Fecha de la operación:</strong> {{ c.fecha }}
                       </p>
