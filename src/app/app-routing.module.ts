@@ -6,6 +6,8 @@ import { AgregarGastoComponent } from './panel/gastos/agregar-gasto/agregar-gast
 import { CargarMunicipalidadComponent } from './panel/municipalidad/cargar-municipalidad/cargar-municipalidad.component';
 import { VerMunicipalidadComponent } from './panel/municipalidad/ver-municipalidad/ver-municipalidad.component';
 import { HomeComponent } from './pages/home/home.component';
+import { AgregarEditarSecretariaComponent } from './panel/secretarias/agregar-editar-secretaria/agregar-editar-secretaria.component';
+import { ListadoDeSecretariasComponent } from './panel/secretarias/listado-de-secretarias/listado-de-secretarias.component';
 
 const routes: Routes = [
   // AUTH
@@ -53,6 +55,22 @@ const routes: Routes = [
     path: 'admin/municipalidades/ver-municipalidad',
     component: VerMunicipalidadComponent,
     data: { title: 'Ver Municipalidad | Control Municipalidad' },
+  },
+  // SECRETARIAS
+  {
+    path: 'admin/secretarias/agregar-secretaria',
+    component: AgregarEditarSecretariaComponent,
+    data: { title: 'Agregar Secretaría | Control Municipalidad' },
+  },
+  {
+    path: 'admin/secretarias/editar-secretaria/:id',
+    component: AgregarEditarSecretariaComponent,
+    data: { title: 'Editar Secretaría | Control Municipalidad' },
+  },
+  {
+    path: 'admin/secretarias/listado-de-secretarias',
+    component: ListadoDeSecretariasComponent,
+    data: { title: 'Listado de Secretarías | Control Municipalidad' },
   },
 ];
 

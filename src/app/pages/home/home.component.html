@@ -1,13 +1,12 @@
 <section class="img-fondo bg-black h-screen pt-[146px] relative">
   <div class="absolute bottom-4 right-4 z-50 bg-white px-6 py-1">
-    <div class="flex gap-1 items-center">
-      <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdWJ-QnRAz4IIXPPus6VZoXOaET3Zg-q_OtA&s"
-        alt=""
-        class="h-8 w-8"
-      />
+    <div
+      class="flex gap-1 items-center"
+      *ngIf="municipalidades && municipalidades.length > 0"
+    >
+      <img [src]="municipalidades[0].urlImagenes" alt="" class="h-8 w-8" />
       <p class="uppercase text-blue-600 font-bold">
-        municipalidad de alta gracia
+        {{ municipalidades[0].municipalidad }}
       </p>
     </div>
   </div>
@@ -27,15 +26,12 @@
 <div class="w-full text-black bg-white">
   <div
     class="flex flex-col w-full justify-center text-center items-center py-[46px]"
+    *ngIf="municipalidades && municipalidades.length > 0"
   >
     <div class="flex justify-center">
-      <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdWJ-QnRAz4IIXPPus6VZoXOaET3Zg-q_OtA&s"
-        alt=""
-        class="h-32 w-32"
-      />
+      <img [src]="municipalidades[0].urlImagenes" alt="" class="h-32 w-32" />
     </div>
-    <h1 class="uppercase font-bold">Municipalidad de Alta Gracia</h1>
+    <h1 class="uppercase font-bold">{{ municipalidades[0].municipalidad }}</h1>
   </div>
   <div
     class="flex flex-col justify-center md:items-start w-full text-left md:flex sm:px-[1rem] lg:px-[2rem]"
@@ -65,18 +61,18 @@
         <!-- TIPO DE INMUEBLKE -->
         <div class="flex items-center gap-2">
           <label
-            for="idTipoInmueble"
+            for="idSecretaria"
             class="block text-sm font-medium text-gray-900 uppercase"
             >secretaría:
           </label>
           <p-dropdown
-            optionLabel="nombre"
-            id="id"
+            optionLabel="secretaria"
+            id="idSecretaria"
             [options]="secretarias"
-            filterBy="nombre"
+            filterBy="secretaria"
             [filter]="true"
-            optionValue="id"
-            placeholder="Seleccionar secretaria"
+            optionValue="idSecretaria"
+            placeholder="Seleccionar secretaría"
             appendTo="body"
             [style]="{
               width: '100%',
@@ -90,7 +86,7 @@
           >
             <ng-template let-e pTemplate="item">
               <div class="l-item">
-                <div>{{ e.nombre }}</div>
+                <div>{{ e.secretaria }}</div>
               </div>
             </ng-template>
           </p-dropdown>
@@ -120,36 +116,59 @@
         currentPageReportTemplate="{first} a {last} de {{
           totalRecords
         }} elementos"
-        [globalFilterFields]="['nombre', 'descripcion']"
+        [globalFilterFields]="[
+          'titulo',
+          'descripcion',
+          'monto',
+          'observaciones'
+        ]"
       >
         <ng-template pTemplate="body" let-c>
           <tr class="bg-white w-full">
-            <p-accordion [style]="{ 'margin-top': '20px', width: '100%' }">
+            <p-accordion [style]="{ width: '100%' }">
               <p-accordionTab
-                [header]="c.nombre"
+                [header]="c.titulo"
                 [style]="{ 'text-transform': 'uppercase', color: 'black' }"
               >
                 <div class="lg:flex flex:flex sm:block gap-6 text-black">
                   <img
-                    src="https://http2.mlstatic.com/D_NQ_NP_2X_608924-MLA53616911130_022023-T.webp"
+                    [src]="c.urlImagenes"
                     alt=""
                     class="h-60 lg:w-60 md:w-60 sm:w-full object-cover"
                   />
                   <div class="flex flex-col w-full gap-6 relative">
                     <div class="lg:flex md:flex sm:block justify-between gap-6">
                       <p>
-                        <strong>Fecha de la operación:</strong> {{ c.fecha }}
+                        <strong>Fecha de la operación:</strong>
+                        {{ c.fecha | date : "dd/MM/yyyy" }}
                       </p>
                       <p>
                         <strong>Monto de la operación:</strong>
-                        {{ c.monto | currency }}
+                        {{
+                          c.monto
+                            | currency
+                              : (c.moneda?.moneda == "Dolares" ? "USD$" : "$")
+                        }}
                       </p>
                     </div>
                     <div class="flex">
                       <p><strong>Descripción:</strong> {{ c.descripcion }}</p>
                     </div>
-                    <div class="absolute bottom-0 left-0">
-                      <p><strong>Secretaría:</strong> {{ c.secretaria }}</p>
+                    <div class="flex">
+                      <p>
+                        <strong>Observaciones:</strong>
+                        {{
+                          c.observaciones == "undefined"
+                            ? "No hay observaciones"
+                            : c.observaciones
+                        }}
+                      </p>
+                    </div>
+                    <div class="">
+                      <p>
+                        <strong>Secretaría:</strong>
+                        {{ c.secretaria?.secretaria }}
+                      </p>
                     </div>
                   </div>
                 </div>

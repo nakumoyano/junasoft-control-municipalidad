@@ -26,9 +26,13 @@ import { PanelRightComponent } from './components/panel-right/panel-right.compon
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { BotonEliminarComponent } from './components/boton-eliminar/boton-eliminar.component';
 import { HomeComponent } from './pages/home/home.component';
+import { AgregarEditarSecretariaComponent } from './panel/secretarias/agregar-editar-secretaria/agregar-editar-secretaria.component';
+import { ListadoDeSecretariasComponent } from './panel/secretarias/listado-de-secretarias/listado-de-secretarias.component';
+import { TruncateTextPipe } from './pipes/truncateText/truncate-text.pipe';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
-  declarations: [AppComponent, DashboardComponent, ListadoDeGastosComponent, AgregarGastoComponent, CargarMunicipalidadComponent, VerMunicipalidadComponent, SkeletonGridComponent, BotonCancelarComponent, PanelRightComponent, SidebarComponent, BotonEliminarComponent, HomeComponent],
+  declarations: [AppComponent, DashboardComponent, ListadoDeGastosComponent, AgregarGastoComponent, CargarMunicipalidadComponent, VerMunicipalidadComponent, SkeletonGridComponent, BotonCancelarComponent, PanelRightComponent, SidebarComponent, BotonEliminarComponent, HomeComponent, AgregarEditarSecretariaComponent, ListadoDeSecretariasComponent, TruncateTextPipe, FooterComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

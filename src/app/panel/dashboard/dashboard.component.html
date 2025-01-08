@@ -34,10 +34,11 @@
                 <h3 class="text-xl">
                   {{
                     mostrarIngresos
-                      ? "$" + (ingresos | number : "1.2-2")
-                      : "$*******"
+                      ? "USD$" + (gastosSemana | number : "1.0-2")
+                      : "USD$*******"
                   }}
                 </h3>
+
                 <!-- Icono de ojo para alternar visibilidad -->
                 <button
                   (click)="toggleIngresos()"
@@ -49,12 +50,44 @@
                   ></i>
                 </button>
               </div>
-              <p class="text-sm text-[#96989b]">Gastos de la semana</p>
+              <p class="text-sm text-[#96989b]">
+                Gastos de la semana (DÓLARES)
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center h-24 p-2 rounded bg-white drop-shadow">
+          <div class="flex items-center gap-x-4">
+            <i
+              class="fa-solid fa-money-bill-trend-up text-[25px] p-4 rounded text-orange-600 bg-orange-100"
+            ></i>
+            <div class="flex flex-col">
+              <div class="flex items-center">
+                <!-- Muestra "$***" si está oculto, o el valor real si está visible -->
+                <h3 class="text-xl">
+                  {{
+                    mostrarIngresosPesos
+                      ? "$" + (gastosSemanaPesos | number : "1.2-2")
+                      : "$*******"
+                  }}
+                </h3>
+                <!-- Icono de ojo para alternar visibilidad -->
+                <button
+                  (click)="toggleIngresosPesos()"
+                  class="ml-2 focus:outline-none"
+                >
+                  <i
+                    class="fas"
+                    [ngClass]="mostrarIngresosPesos ? 'fa-eye-slash' : 'fa-eye'"
+                  ></i>
+                </button>
+              </div>
+              <p class="text-sm text-[#96989b]">Gastos de la semana (PESOS)</p>
             </div>
           </div>
         </div>
         <!-- COMPRAS -->
-        <div class="flex items-center h-24 p-2 rounded bg-white drop-shadow">
+        <!-- <div class="flex items-center h-24 p-2 rounded bg-white drop-shadow">
           <div class="flex items-center gap-x-4">
             <i
               class="fa-solid fa-credit-card text-[25px] p-4 rounded text-green-600 bg-green-100"
@@ -64,7 +97,7 @@
               <p class="text-sm text-[#96989b]">Compras del día</p>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <!--    COMPRAS DEL DÍA DE HOY -->
@@ -72,41 +105,47 @@
         class="grid grid-cols-12 border border-solid border-gray-200 drop-shadow p-3 my-2 rounded bg-white"
       >
         <legend class="text-lg font-bold px-2 uppercase">
-          COMPRAS DEL DÍA DE HOY
+          COMPRAS DEL DÍA DE HOY ({{ obtenerTotalResultados() || 0 }})
         </legend>
 
-        <ng-container *ngIf="stocks && stocks.length > 0; else noStocks">
+        <ng-container
+          *ngIf="gastosDelDia && gastosDelDia.length > 0; else noGastosDia"
+        >
           <div class="table-container col-span-12">
             <table class="w-full text-sm text-left">
               <thead class="uppercase">
-                <tr class="">
+                <tr class="text-center">
                   <th scope="col" class="px-6 py-3">
-                    <i class="fa-solid fa-shirt mr-2"></i>PRODUCTO
+                    <i class="fa-solid fa-file-signature mr-2"></i>TÍTULO
                   </th>
                   <th scope="col" class="px-6 py-3">
-                    <i class="fa-solid fa-network-wired mr-2"></i>CANTIDAD
+                    <i class="fa-solid fa-coins mr-2"></i>MONTO
                   </th>
                   <th scope="col" class="px-6 py-3">
-                    <i class="fa-solid fa-cart-flatbed mr-2"></i>STOCK MÍNIMO
+                    <i class="fa-solid fa-diagram-project mr-2"></i>SECRETARÍA
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr
                   class="bg-white border-b hover:bg-gray-50"
-                  *ngFor="let s of stocks | slice : 0 : 3"
+                  *ngFor="let g of gastosDelDia | slice : 0 : 3"
                 >
-                  <th class="px-3 py-4 border border-r uppercase">
-                    {{ s.producto?.nombre }}
+                  <th class="px-3 py-4 border border-r uppercase text-center">
+                    {{ g.titulo }}
                   </th>
                   <td class="px-6 py-4 border border-r text-center">
-                    {{ s.cantidad }}
+                    {{
+                      g.monto
+                        | currency
+                          : (g.moneda?.moneda == "Dolares" ? "USD$" : "$")
+                    }}
                   </td>
                   <td class="px-6 py-4 border border-r text-center">
                     <p
-                      class="text-red-600 mx-auto font-bold py-2 px-4 rounded-lg"
+                      class="text-red-600 mx-auto font-bold py-2 px-4 rounded-lg uppercase"
                     >
-                      {{ s.stockMinimo }}
+                      {{ g.secretaria?.secretaria }}
                     </p>
                   </td>
                 </tr>
@@ -114,7 +153,7 @@
             </table>
           </div>
         </ng-container>
-        <ng-template #noStocks>
+        <ng-template #noGastosDia>
           <div
             class="col-span-12 justify-center text-center text-2xl py-4 text-slate-400 flex flex-col gap-4"
           >
@@ -126,7 +165,7 @@
         </ng-template>
         <div
           class="mt-3 col-span-12 justify-center text-center"
-          *ngIf="stocks && stocks.length > 3"
+          *ngIf="gastosDelDia && gastosDelDia.length > 3"
         >
           <a
             routerLink="/admin/stocks/listado-de-stocks"

@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./boton-eliminar.component.css'],
 })
 export class BotonEliminarComponent implements OnInit {
-  @Input() elemento: string;
+  @Input() elemento: any;
   @Output() eliminado = new EventEmitter();
 
   private subscription = new Subscription();

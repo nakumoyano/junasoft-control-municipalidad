@@ -33,29 +33,45 @@
         </nav>
       </div>
     </div>
+    <!-- SI HAY MUNICIPALIDAD -->
     <div
       class="relative overflow-x-auto shadow-md sm:rounded-lg p-4 bg-white mt-6 text-center"
+      *ngIf="municipalidades && municipalidades.length > 0; else noData"
     >
       <div class="absolute top-2 right-2 gap-2 flex">
         <!-- BOTON EDITAR -->
         <button
           class="px-2 py-1 h-8 bg-blue-600 hover:bg-blue-700 rounded text-white"
           title="Editar"
+          [routerLink]="[
+            '/admin/municipalidades/editar-municipalidad',
+            municipalidades[0].idMunicipalidad
+          ]"
         >
           <i class="fa-solid fa-pen"></i>
         </button>
         <!-- BOTON ELIMINAR -->
-        <app-boton-eliminar> </app-boton-eliminar>
+        <app-boton-eliminar
+          [elemento]="municipalidades[0]"
+          (eliminado)="eliminar($event)"
+        ></app-boton-eliminar>
       </div>
       <div class="flex justify-center">
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdWJ-QnRAz4IIXPPus6VZoXOaET3Zg-q_OtA&s"
-          alt=""
+          [src]="municipalidades[0].urlImagenes"
+          alt="Imagen temporal"
           class="h-32 w-32"
         />
       </div>
-      <h1 class="uppercase font-bold">Municipalidad de Alta Gracia</h1>
+      <h1 class="uppercase font-bold">
+        {{ municipalidades[0].municipalidad }}
+      </h1>
     </div>
+
+    <!-- SI NO HAY MUNICIPALIDAD -->
+    <ng-template #noData>
+      <p>No hay datos disponibles para mostrar.</p>
+    </ng-template>
   </div>
   <div
     class="h-full w-[300px] flex flex-col gap-y-4 rounded-lg lg:block md:hidden sm:hidden"

@@ -78,6 +78,36 @@
           <div
             class="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mb-6"
           >
+            <!-- titulo -->
+            <div class="">
+              <label
+                for="titulo"
+                class="block mb-2 text-sm font-medium text-gray-900 uppercase"
+                >título
+              </label>
+              <input
+                type="text"
+                id="titulo"
+                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                placeholder="Ingrese el titulo"
+                formControlName="titulo"
+                [class.invalido]="
+                  controlTitulo.touched && controlTitulo.invalid
+                "
+                [ngClass]="
+                  controlTitulo.touched && controlTitulo.invalid
+                    ? 'alert placeholder:text-sm '
+                    : 'rounded-lg focus:outline-none text-black placeholder:text-sm'
+                "
+              />
+              <small
+                class="alert-panel alert-danger"
+                role="alert"
+                *ngIf="controlTitulo.touched && controlTitulo.invalid"
+              >
+                El titulo es requerido.
+              </small>
+            </div>
             <!-- Monto -->
             <div class="">
               <label
@@ -140,14 +170,14 @@
             <div class="flex flex-col">
               <label
                 class="block mb-2 text-sm font-medium text-gray-900"
-                for="fechaProximaVisita"
+                for="fecha"
                 >Fecha</label
               >
               <input
                 type="date"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                formControlName="fechaProximaVisita"
-                id="fechaProximaVisita"
+                formControlName="fecha"
+                id="fecha"
                 [class.invalido]="controlFecha.touched && controlFecha.invalid"
                 [ngClass]="
                   controlFecha.touched && controlFecha.invalid
@@ -163,6 +193,111 @@
                 La fecha es requerida.
               </small>
             </div>
+            <!-- MONEDA -->
+            <div class="flex flex-col">
+              <label
+                for="idMoneda"
+                class="block mb-2 text-sm font-medium text-gray-900 uppercase"
+                >MONEDA</label
+              >
+              <p-dropdown
+                optionLabel="moneda"
+                id="idMoneda"
+                [options]="monedas"
+                [(ngModel)]="selectedMoneda"
+                filterBy="moneda"
+                [filter]="true"
+                optionValue="idMoneda"
+                [showClear]="true"
+                placeholder="Seleccionar moneda"
+                formControlName="idMoneda"
+                appendTo="body"
+                [style]="{
+                  width: '100%',
+                  'background-color': '#F9FAFB',
+                  height: '42px',
+                  display: 'flex',
+                  'align-items': 'center',
+                  'border-radius': '8px',
+                  border:
+                    '1px solid rgb(209 213 219 / var(--tw-border-opacity))'
+                }"
+                [class.invalido]="
+                  controlMoneda.touched && controlMoneda.invalid
+                "
+                [ngClass]="
+                  controlMoneda.touched && controlMoneda.invalid
+                    ? 'border border-red-500 rounded-lg'
+                    : 'rounded-lg focus:outline-none text-black placeholder:text-sm'
+                "
+              >
+                <ng-template let-e pTemplate="item">
+                  <div class="l-item">
+                    <div>{{ e.moneda }}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+              <small
+                class="alert-panel alert-danger"
+                role="alert"
+                *ngIf="controlMoneda.touched && controlMoneda.invalid"
+              >
+                Seleccione una opción.
+              </small>
+            </div>
+            <!-- SECRETARIA -->
+            <div class="flex flex-col">
+              <label
+                for="idSecretaria"
+                class="block mb-2 text-sm font-medium text-gray-900 uppercase"
+                >secretaría</label
+              >
+              <p-dropdown
+                optionLabel="secretaria"
+                id="idSecretaria"
+                [options]="secretarias"
+                [(ngModel)]="selectedSecretaria"
+                filterBy="secretaria"
+                [filter]="true"
+                optionValue="idSecretaria"
+                [showClear]="true"
+                placeholder="Seleccionar secretaria"
+                formControlName="idSecretaria"
+                appendTo="body"
+                [style]="{
+                  width: '100%',
+                  'background-color': '#F9FAFB',
+                  height: '42px',
+                  display: 'flex',
+                  'align-items': 'center',
+                  'border-radius': '8px',
+                  border:
+                    '1px solid rgb(209 213 219 / var(--tw-border-opacity))'
+                }"
+                [class.invalido]="
+                  controlSecretaria.touched && controlSecretaria.invalid
+                "
+                [ngClass]="
+                  controlSecretaria.touched && controlSecretaria.invalid
+                    ? 'border border-red-500 rounded-lg'
+                    : 'rounded-lg focus:outline-none text-black placeholder:text-sm'
+                "
+              >
+                <ng-template let-e pTemplate="item">
+                  <div class="l-item">
+                    <div>{{ e.secretaria }}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+              <small
+                class="alert-panel alert-danger"
+                role="alert"
+                *ngIf="controlSecretaria.touched && controlSecretaria.invalid"
+              >
+                Seleccione una opción.
+              </small>
+            </div>
+            <!-- IMAGENES -->
             <div
               class="flex flex-col lg:col-span-2 md:col-span-2 sm:col-span-1"
             >
@@ -176,11 +311,11 @@
                 class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
                 id="file_input"
                 type="file"
-                multiple
+                (change)="onFileSelected($event)"
               />
             </div>
             <!-- ARCHIVOS EN LISTA -->
-            <!-- <div *ngIf="selectedFiles.length > 0" class="mb-2">
+            <div *ngIf="selectedFiles.length > 0" class="mb-2">
               <p class="block text-sm font-medium text-gray-900">
                 Archivos seleccionados
               </p>
@@ -200,9 +335,9 @@
                   }}</span>
                 </li>
               </ul>
-            </div> -->
+            </div>
             <!-- ARCHIVOS -->
-            <!-- <div
+            <div
               class="flex flex-col gap-2 mb-6"
               *ngIf="isEdit && archivos.length > 0"
             >
@@ -228,7 +363,7 @@
                   >
                 </li>
               </ul>
-            </div> -->
+            </div>
             <!-- DESCRIPCIÓN -->
             <div class="lg:col-span-2 md:col-span-2 sm:col-span-1">
               <label
@@ -325,7 +460,7 @@
 
               Guardar cambios
             </button>
-            <!-- <app-boton-cancelar *ngIf="isEdit"></app-boton-cancelar> -->
+            <app-boton-cancelar *ngIf="isEdit"></app-boton-cancelar>
           </div>
         </fieldset>
       </form>
