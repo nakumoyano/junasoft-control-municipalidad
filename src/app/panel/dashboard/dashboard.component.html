@@ -1,0 +1,145 @@
+<div class="grid grid-cols-12 gap-4 mt-16 bg-[#F7F9FC]">
+  <app-sidebar></app-sidebar>
+  <div class="lg:col-span-8 sm:col-span-12" id="dashboard">
+    <div class="lg:ml-32 md:ml-56 mt-4 lg:mx-0 md:mx-0 sm:mx-2">
+      <!-- IMAGEND E ARRIBA -->
+      <div class="w-full card flexrelative mb-4 h-56">
+        <div class="flex items-center w-full justify-between h-56 p-2 content">
+          <div class="flex flex-col w-full text-white h-full z-50">
+            <div class="flex flex-col text-lg">
+              <div class="flex gap-x-2">
+                <p class="text-2xl font-bold">
+                  Bienvenido a
+                  <span class="italic text-blue-500"
+                    >MUNICIPALIDAD ALTA GRACIA</span
+                  >
+                </p>
+              </div>
+              <!-- <p *ngIf="user">👋 Hola, {{ user.resultado.nombreCompleto }}!</p> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- CARDS CON DATOS NUMERICOS -->
+      <!-- TOTAL INGRESOS -->
+      <div class="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mb-4">
+        <div class="flex items-center h-24 p-2 rounded bg-white drop-shadow">
+          <div class="flex items-center gap-x-4">
+            <i
+              class="fa-solid fa-money-bill-trend-up text-[25px] p-4 rounded text-orange-600 bg-orange-100"
+            ></i>
+            <div class="flex flex-col">
+              <div class="flex items-center">
+                <!-- Muestra "$***" si está oculto, o el valor real si está visible -->
+                <h3 class="text-xl">
+                  {{
+                    mostrarIngresos
+                      ? "$" + (ingresos | number : "1.2-2")
+                      : "$*******"
+                  }}
+                </h3>
+                <!-- Icono de ojo para alternar visibilidad -->
+                <button
+                  (click)="toggleIngresos()"
+                  class="ml-2 focus:outline-none"
+                >
+                  <i
+                    class="fas"
+                    [ngClass]="mostrarIngresos ? 'fa-eye-slash' : 'fa-eye'"
+                  ></i>
+                </button>
+              </div>
+              <p class="text-sm text-[#96989b]">Gastos de la semana</p>
+            </div>
+          </div>
+        </div>
+        <!-- COMPRAS -->
+        <div class="flex items-center h-24 p-2 rounded bg-white drop-shadow">
+          <div class="flex items-center gap-x-4">
+            <i
+              class="fa-solid fa-credit-card text-[25px] p-4 rounded text-green-600 bg-green-100"
+            ></i>
+            <div class="flex flex-col">
+              <h3 class="text-xl">0</h3>
+              <p class="text-sm text-[#96989b]">Compras del día</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--    COMPRAS DEL DÍA DE HOY -->
+      <fieldset
+        class="grid grid-cols-12 border border-solid border-gray-200 drop-shadow p-3 my-2 rounded bg-white"
+      >
+        <legend class="text-lg font-bold px-2 uppercase">
+          COMPRAS DEL DÍA DE HOY
+        </legend>
+
+        <ng-container *ngIf="stocks && stocks.length > 0; else noStocks">
+          <div class="table-container col-span-12">
+            <table class="w-full text-sm text-left">
+              <thead class="uppercase">
+                <tr class="">
+                  <th scope="col" class="px-6 py-3">
+                    <i class="fa-solid fa-shirt mr-2"></i>PRODUCTO
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    <i class="fa-solid fa-network-wired mr-2"></i>CANTIDAD
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    <i class="fa-solid fa-cart-flatbed mr-2"></i>STOCK MÍNIMO
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  class="bg-white border-b hover:bg-gray-50"
+                  *ngFor="let s of stocks | slice : 0 : 3"
+                >
+                  <th class="px-3 py-4 border border-r uppercase">
+                    {{ s.producto?.nombre }}
+                  </th>
+                  <td class="px-6 py-4 border border-r text-center">
+                    {{ s.cantidad }}
+                  </td>
+                  <td class="px-6 py-4 border border-r text-center">
+                    <p
+                      class="text-red-600 mx-auto font-bold py-2 px-4 rounded-lg"
+                    >
+                      {{ s.stockMinimo }}
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-container>
+        <ng-template #noStocks>
+          <div
+            class="col-span-12 justify-center text-center text-2xl py-4 text-slate-400 flex flex-col gap-4"
+          >
+            <i class="fa-solid fa-clipboard-check text-[60px]"></i>
+            <p class="font-thin uppercase">
+              No hay compras realizadas el día de hoy.
+            </p>
+          </div>
+        </ng-template>
+        <div
+          class="mt-3 col-span-12 justify-center text-center"
+          *ngIf="stocks && stocks.length > 3"
+        >
+          <a
+            routerLink="/admin/stocks/listado-de-stocks"
+            class="w-full text-yellow-500 font-bold px-4 py-2 hover:bg-blue-50 rounded-lg"
+            >Ver más</a
+          >
+        </div>
+      </fieldset>
+    </div>
+  </div>
+  <div
+    class="h-full flex flex-col gap-y-4 rounded-lg lg:block md:hidden sm:hidden mt-4"
+  >
+    <app-panel-right></app-panel-right>
+  </div>
+</div>

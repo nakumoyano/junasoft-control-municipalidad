@@ -1,0 +1,17 @@
+.img-fondo {
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.783), rgba(0, 0, 0, 0)),
+    url(https://cdn.cnn.com/cnnnext/dam/assets/190325091554-estancia-jesuitica-alta-gracia-argentina-cordoba-destinos-turismo-00013119.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  z-index: -9999;
+  background-color: black;
+}
+
+.ubuntu-sans {
+  font-family: "Ubuntu Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: bold;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}

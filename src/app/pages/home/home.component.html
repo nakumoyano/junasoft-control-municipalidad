@@ -1,0 +1,131 @@
+<section class="img-fondo bg-black h-screen pt-[146px] relative">
+  <div class="absolute bottom-4 right-4 z-50 bg-white px-6 py-1">
+    <div class="flex gap-1 items-center">
+      <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdWJ-QnRAz4IIXPPus6VZoXOaET3Zg-q_OtA&s"
+        alt=""
+        class="h-8 w-8"
+      />
+      <p class="uppercase text-blue-600 font-bold">
+        municipalidad de alta gracia
+      </p>
+    </div>
+  </div>
+  <div class="py-8 mt-10 flex m-auto lg:px-[6rem] md:px-[6rem] sm:px-[1rem]">
+    <div
+      class="flex flex-col justify-center items-center w-full px-2 py-10 text-center"
+    >
+      <h1
+        class="text-white font-medium lg:leading-[55px] md:leading-[50px] sm:leading-[40px] uppercase ubuntu-sans w-2/3"
+      >
+        Juntos, Construyendo un Municipio Confiable
+      </h1>
+    </div>
+  </div>
+</section>
+<!-- TABLA -->
+<div class="w-full text-black bg-white">
+  <div
+    class="flex flex-col w-full justify-center text-center items-center py-[46px]"
+  >
+    <div class="flex justify-center">
+      <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdWJ-QnRAz4IIXPPus6VZoXOaET3Zg-q_OtA&s"
+        alt=""
+        class="h-32 w-32"
+      />
+    </div>
+    <h1 class="uppercase font-bold">Municipalidad de Alta Gracia</h1>
+  </div>
+  <div
+    class="flex flex-col justify-center md:items-start w-full text-left md:flex sm:px-[1rem] lg:px-[2rem]"
+  >
+    <!-- BUSCADOR -->
+    <div class="border rounded flex justify-between p-4 w-full">
+      <div class="p-toolbar-group-start items-center flex"></div>
+      <div class="p-toolbar-group-end flex gap-4">
+        <div class="flex">
+          <span class="p-input-icon-left ml-auto">
+            <input
+              type="text"
+              (input)="dt?.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Buscar"
+              [style]="{
+                'border-radius': '4px',
+                border: '1px solid #D4D8DD',
+                height: '40px'
+              }"
+            />
+          </span>
+        </div>
+      </div>
+    </div>
+    <!-- TABLA -->
+    <p-card class="card w-full">
+      <p-table
+        #dt
+        dataKey="id"
+        [rows]="10"
+        [value]="gastos"
+        [lazy]="false"
+        [showCurrentPageReport]="true"
+        [paginator]="true"
+        [paginatorPosition]="'bottom'"
+        [totalRecords]="totalRecords"
+        [scrollable]="true"
+        [resizableColumns]="true"
+        [responsive]="true"
+        styleClass="p-datatable-gridlines p-datatable-sm"
+        [style]="{ 'border-collapse': 'separate', 'border-spacing': 0 }"
+        [customSort]="true"
+        [scrollHeight]="'calc(100vh )'"
+        currentPageReportTemplate="{first} a {last} de {{
+          totalRecords
+        }} elementos"
+        [globalFilterFields]="['nombre', 'descripcion']"
+      >
+        <ng-template pTemplate="body" let-c>
+          <tr class="bg-white w-full">
+            <p-accordion [style]="{ 'margin-top': '20px', width: '100%' }">
+              <p-accordionTab
+                [header]="c.nombre"
+                [style]="{ 'text-transform': 'uppercase', color: 'black' }"
+              >
+                <div class="lg:flex flex:flex sm:block gap-4 text-black">
+                  <img
+                    src="https://http2.mlstatic.com/D_NQ_NP_2X_608924-MLA53616911130_022023-T.webp"
+                    alt=""
+                    class="h-60 w-60 object-cover"
+                  />
+                  <div class="flex flex-col w-full gap-6">
+                    <div class="flex justify-between">
+                      <p>
+                        <strong>Fecha de la operación:</strong> {{ c.fecha }}
+                      </p>
+                      <p>
+                        <strong>Monto de la operación:</strong>
+                        {{ c.monto | currency }}
+                      </p>
+                    </div>
+                    <div class="flex">
+                      <p><strong>Descripción:</strong> {{ c.descripcion }}</p>
+                    </div>
+                  </div>
+                </div>
+              </p-accordionTab></p-accordion
+            >
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7">No hay gastos registrados.</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+          <div class="p-mt-1 p-text-right"></div>
+        </ng-template>
+        <ng-template pTemplate="paginatorleft"></ng-template>
+      </p-table>
+    </p-card>
+  </div>
+</div>
